@@ -8,7 +8,7 @@ on:
       - master
   workflow_dispatch:
   schedule:
-    - cron: '03 5 * * *'
+    - cron: '03 2 * * *'
 
 jobs:
   build:
