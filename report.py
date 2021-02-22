@@ -17,11 +17,11 @@ class Report(object):
 
     def report(self):
         loginsuccess = False
-        retrycount = 5
+        retrycount = 2
+        session = self.login()
         while (not loginsuccess) and retrycount:
-            session = self.login()
             cookies = session.cookies
-            getform = session.get("https://weixine.ustc.edu.cn/2020")
+            getform = session.get("https://weixine.ustc.edu.cn/2020/home")
             retrycount = retrycount - 1
             if getform.url != "https://weixine.ustc.edu.cn/2020/home":
                 print("Login Failed! Retrying...")
@@ -82,8 +82,11 @@ class Report(object):
         data = {
             'model': 'uplogin.jsp',
             'service': 'https://weixine.ustc.edu.cn/2020/caslogin',
+            'warn': '',
+            'showCode': '',
             'username': self.stuid,
             'password': str(self.password),
+            'button': ''
         }
         session = requests.Session()
         session.post(url, data=data)
@@ -99,7 +102,7 @@ if __name__ == "__main__":
     parser.add_argument('password', help='your CAS password', type=str)
     args = parser.parse_args()
     autorepoter = Report(stuid=args.stuid, password=args.password, data_path=args.data_path)
-    count = 5
+    count = 1
     while count != 0:
         ret = autorepoter.report()
         if ret != False:
